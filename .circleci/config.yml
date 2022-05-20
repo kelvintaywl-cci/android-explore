@@ -17,9 +17,8 @@ jobs:
       - run:
           name: Upgrade to Java 15
           command: |
-            # https://www.linuxcapable.com/how-to-install-openjdk-17-on-ubuntu-20-04/
-            sudo apt update && sudo apt upgrade -y
-            sudo apt-cache search openjdk
+            sudo add-apt-repository -y ppa:openjdk-r/ppa
+            sudo apt-get update
             sudo apt-get install -y openjdk-15-jre openjdk-15-jdk
       - run: java -version            
 
