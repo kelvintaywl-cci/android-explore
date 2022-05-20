@@ -14,6 +14,14 @@ jobs:
       # should say OpenJDK 11, according to
       # https://discuss.circleci.com/t/android-images-april-2022-update/43597
       - run: java -version
+      - run:
+          name: Upgrade to Java 15
+          command: |
+            # https://www.linuxcapable.com/how-to-install-openjdk-17-on-ubuntu-20-04/
+            sudo apt update && sudo apt upgrade -y
+            sudo apt-cache search openjdk
+            sudo apt-get install -y openjdk-15-jre openjdk-15-jdk
+      - run: java -version            
 
 workflows:
   main:
