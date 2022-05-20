@@ -1,21 +1,21 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@1.0.3
+  android: circleci/android@2.0.3
 
 jobs:
-  opendjk-upgrade:
+  openjdk-upgrade:
     executor:
       name: android/android-machine
-      tag: android:2022.04.1
-      resource_class: medium
+      tag: 2022.04.1
+      resource-class: medium
      
-  steps:
-    # should say OpenJDK 11, according to
-    # https://discuss.circleci.com/t/android-images-april-2022-update/43597
-    - run: java -version
+    steps:
+      # should say OpenJDK 11, according to
+      # https://discuss.circleci.com/t/android-images-april-2022-update/43597
+      - run: java -version
 
 workflows:
   main:
     jobs:
-      - opendjk-upgrade
+      - openjdk-upgrade
