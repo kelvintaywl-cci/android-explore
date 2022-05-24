@@ -23,9 +23,11 @@ jobs:
             echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
             sudo apt-get update
             sudo apt-get install temurin-11-jdk
-
+            
+            echo "export PATH='/usr/lib/jvm/temurin-11-jdk-amd64/bin:$PATH'" >> $BASH_ENV
       - run: |
-          java -version
+          which java
+          java --version
           
   openjdk-upgrade:
     executor:
