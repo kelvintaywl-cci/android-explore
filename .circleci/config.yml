@@ -5,10 +5,10 @@ orbs:
 
 jobs:
   mock-build-and-test:
-    machine:
-      # Ubuntu 20.04, same as GHA's ubuntu-latest
-      # See https://github.com/actions/virtual-environments#available-environments
-      image: ubuntu-2004:2022.04.1
+    executor:
+      name: android/android-machine
+      # this is also based on Ubuntu 20.04
+      tag: 2022.04.1
     resource_class: medium
     steps:
       - checkout
