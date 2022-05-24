@@ -9,7 +9,7 @@ jobs:
       # Ubuntu 20.04, same as GHA's ubuntu-latest
       # See https://github.com/actions/virtual-environments#available-environments
       image: ubuntu-2004:2022.04.1
-    resource-class: medium
+    resource_class: medium
     steps:
       - checkout
       - run: |
