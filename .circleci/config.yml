@@ -8,7 +8,7 @@ jobs:
     executor:
       name: android/android-machine
       # this is also based on Ubuntu 20.04
-      tag: 2022.04.1
+      tag: 2022.04.4
       resource-class: medium
     steps:
       - checkout
