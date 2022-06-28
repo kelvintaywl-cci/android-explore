@@ -1,7 +1,8 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.0.1
+  android: circleci/android@2.1.1
+  old-android: circleci/android@1.0.3
 
 jobs:
   machines:
@@ -11,7 +12,9 @@ jobs:
     machine:
       image: << parameters.img >>
     steps:
-      - run: echo "Machine"
+      - checkout
+      - old-android/restore-gradle-cache
+      - android/restore-gradle-cache
     
 
 workflows:
@@ -26,6 +29,6 @@ workflows:
                 # would need to confirm this https://discuss.circleci.com/t/android-images-june-2022-update/44451
                 # - android:2022.06
                 - android:2022.06.1
-                - android:2022.04.1
-                - android:2022.01.1
+#                 - android:2022.04.1
+#                 - android:2022.01.1
                 - android:202102-01
