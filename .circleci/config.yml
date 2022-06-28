@@ -25,7 +25,9 @@ commands:
       - run:
           command: |-
             #!/bin/bash
-            find ${PARAM_FIND_ARGS} | sort | xargs cat |
+            # not ideal to use eval, but
+            # see: https://stackoverflow.com/q/23924181
+            eval find ${PARAM_FIND_ARGS} | sort | xargs cat |
             shasum | awk '{print $1}' > /tmp/gradle_cache_seed
           environment:
             PARAM_FIND_ARGS: << parameters.find-args >>
