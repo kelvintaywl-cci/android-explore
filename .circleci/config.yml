@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.1.0
-  old-android: circleci/android@1.0.3
+  android: circleci/android@2.1.1
+  old-android: circleci/android@2.1.0
 
 jobs:
   machines:
@@ -14,6 +14,7 @@ jobs:
     steps:
       - checkout
       - old-android/restore-gradle-cache
+      # this will fail
       - android/restore-gradle-cache
     
 
@@ -24,11 +25,5 @@ workflows:
           matrix:
             parameters:
               img:
-                # See https://circleci.com/developer/machine/image/android
-                # Looks like android:2022.06 is not available yet?
-                # would need to confirm this https://discuss.circleci.com/t/android-images-june-2022-update/44451
-                # - android:2022.06
                 - android:2022.06.1
-#                 - android:2022.04.1
-#                 - android:2022.01.1
                 - android:202102-01
