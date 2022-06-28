@@ -1,54 +1,26 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.0.3
+  android: circleci/android@2.0.1
 
 jobs:
-  mock-build-and-test:
-    executor:
-      name: android/android-machine
-      # this is also based on Ubuntu 20.04
-      tag: 2022.04.4
-      resource-class: medium
+  machines:
+    parameters:
+      img:
+        type: string
+    machine:
+      image: << parameters.img >>
     steps:
-      - checkout
-      - run: |
-          git submodule update --init
-      - run:
-          name: Install Temurin Java 11
-          command: |
-            # See https://blog.adoptium.net/2021/12/eclipse-temurin-linux-installers-available/
-            sudo apt-get install -y wget apt-transport-https gnupg
-            sudo wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo apt-key add -
-            echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
-            sudo apt-get update
-            sudo apt-get install temurin-11-jdk
-            
-            echo "export PATH='/usr/lib/jvm/temurin-11-jdk-amd64/bin:$PATH'" >> $BASH_ENV
-      - run: |
-          which java
-          java --version
-          
-  openjdk-upgrade:
-    executor:
-      name: android/android-machine
-      tag: 2022.04.1
-      resource-class: medium
-     
-    steps:
-      # should say OpenJDK 11, according to
-      # https://discuss.circleci.com/t/android-images-april-2022-update/43597
-      - run: java -version
-      - run:
-          name: Upgrade to Java 15
-          command: |
-            sudo add-apt-repository -y ppa:openjdk-r/ppa
-            sudo apt-get update
-            sudo apt-get install -y openjdk-15-jre openjdk-15-jdk
-      - run: java -version            
+      - run: echo "Machine"
+    
 
 workflows:
   main:
     jobs:
-      - mock-build-and-test
-#       - openjdk-upgrade
+      - machines:
+          matrix:
+            parameters:
+              img:
+                - android:2022.06
+                - android:2022.01.1
+                - android:202102-01
