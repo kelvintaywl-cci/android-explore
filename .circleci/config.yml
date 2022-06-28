@@ -1,8 +1,39 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.1.1
+  # android: circleci/android@2.1.1
   old-android: circleci/android@2.1.0
+
+commands:
+  # copied via:
+  #   $ circleci orb source circleci/android@2.1.1 |  yq -e '.commands.restore-gradle-cache' - | pbcopy
+  android-v2_1_1-restore-gradle-cache:
+    description: |
+      Restore gradle cache
+    parameters:
+      cache-prefix:
+        default: v1
+        description: Used to form part of the cache key
+        type: string
+      find-args:
+        default: . -type f \( -name 'build.gradle' -o -name 'settings.gradle' -o -name 'build.gradle.kts' -o -name 'settings.gradle.kts' \)
+        description: |
+          Use this to customize how the find command is used to look for relevant
+          file changes.
+        type: string
+    steps:
+      - run:
+          command: |-
+            #!/bin/bash
+            find ${PARAM_FIND_ARGS} | sort | xargs cat |
+            shasum | awk '{print $1}' > /tmp/gradle_cache_seed
+          environment:
+            PARAM_FIND_ARGS: << parameters.find-args >>
+          name: Generate cache checksum
+      - restore_cache:
+          key: gradle-<< parameters.cache-prefix>>-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
+          name: Restore gradle cache
+
 
 jobs:
   machines:
@@ -15,7 +46,7 @@ jobs:
       - checkout
       - old-android/restore-gradle-cache
       # this will fail
-      - android/restore-gradle-cache
+      - android-v2_1_1-restore-gradle-cache
     
 
 workflows:
